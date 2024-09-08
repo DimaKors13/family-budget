@@ -9,15 +9,21 @@ import (
 )
 
 type Config struct {
-	Env            string     `yaml:"env" env-default:"local"`
-	StorageAddress string     `yaml:"storage_address" env-required:"true"`
-	HTTPServer     HTTPServer `yaml:"http_server"`
+	Env          string       `yaml:"env" env-default:"local"`
+	DBAccessInfo DBAccessInfo `yaml:"db_access_info"`
+	HTTPServer   HTTPServer   `yaml:"http_server"`
 }
 
 type HTTPServer struct {
 	Address     string        `yaml:"address" env-default:"localhost:8090"`
 	TimeOut     time.Duration `yaml:"timeout" env-default:"4s"`
 	IdleTimeout time.Duration `yaml:"idle_timeout" env-default:"30s"`
+}
+
+type DBAccessInfo struct {
+	DBAddress  string `yaml:"storage_address" env-required:"true"`
+	DBUser     string `yaml:"db_user" env-default:"postgres"`
+	DBPassword string `yaml:"db_password" env-required:"true"`
 }
 
 func MustLoad() *Config {

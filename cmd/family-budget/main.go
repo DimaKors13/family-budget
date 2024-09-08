@@ -2,6 +2,8 @@ package main
 
 import (
 	"family-budget/internal/config"
+	"family-budget/internal/lib/logger"
+	"family-budget/internal/storage/postgreSQL"
 	"log/slog"
 	"os"
 )
@@ -24,6 +26,13 @@ func main() {
 	log.Debug("Debug messages in logger are enabled.")
 
 	// TODO: init storage: postgresql
+	storage, err := postgreSQL.New(&config.DBAccessInfo)
+	if err != nil {
+		log.Error("Failed to initialize storage with migration", logger.Err(err))
+		os.Exit(1)
+	}
+
+	_ = storage
 
 	// TODO run router: chi, chi.render
 

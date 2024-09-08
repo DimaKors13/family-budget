@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS cash_flow (
+ id SERIAL PRIMARY KEY,
+ record_date TIMESTAMP NOT NULL,
+ multiplier INT NOT NULL DEFAULT 1,
+ category_id INTEGER NOT NULL,
+ account_id INTEGER NOT NULL,
+ amount NUMERIC(15,2) NOT NULL
+);
