@@ -17,8 +17,6 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 
-//TODO: create DELETE methods of storage
-
 // psqlMigrationsPath содержит локальный путь к папке, содержащей файлы миграции БД.
 const psqlMigrationsPath = "./postgreSQL/migrations/"
 

@@ -13,6 +13,5 @@ func CurrentMigrationsPath(migrationsPath string) string {
 	currenttPath = filepath.Dir(currenttPath)
 	result := filepath.Join(currenttPath, migrationsPath)
 	return filepath.ToSlash(result)
-	//TODO: Найти более простой способо сформировать путь к файлам миграций
 
 }

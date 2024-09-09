@@ -29,9 +29,9 @@ const (
 //  2. Инициация логгера
 //  3. Установка соединения с базой данных, запуск миграций при установке соединения
 //  4. Инициализация роутера
-//		4.1 Объявление middleware хендлеров
-//		4.2 Объявление основных хендлеров запросов клиента
-//	5. Инициализация и запуск сервера
+//     4.1 Объявление middleware хендлеров
+//     4.2 Объявление основных хендлеров запросов клиента
+//  5. Инициализация и запуск сервера
 func main() {
 
 	config := config.MustLoad()
@@ -54,11 +54,6 @@ func main() {
 	router.Use(middleware.Recoverer)
 
 	router.Post("/account", handlers.PostAccount(log, storage))
-	//TODO router.Get("/account", )
-	//TODO router.Post("/category", )
-	//TODO router.Get("/category", )
-	//TODO router.Post("/flow-record", )
-	//TODO router.Get("/flow-record", )
 
 	srv := http.Server{
 		Addr:         "localhost:8081",
