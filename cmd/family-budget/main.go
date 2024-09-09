@@ -29,25 +29,24 @@ const (
 //  2. Инициация логгера
 //  3. Установка соединения с базой данных, запуск миграций при установке соединения
 //  4. Инициализация роутера
+//		4.1 Объявление middleware хендлеров
+//		4.2 Объявление основных хендлеров запросов клиента
+//	5. Инициализация и запуск сервера
 func main() {
 
-	//init CONFIG: cleanenv
 	config := config.MustLoad()
 
-	//init logger: slog
 	log := setupLogger(config.Env)
 
 	log.Info("Starting Family Budget App.", slog.String("env", config.Env))
 	log.Debug("Debug messages in logger are enabled.")
 
-	//init storage: postgresql
 	storage, err := postgreSQL.New(&config.DBAccessInfo)
 	if err != nil {
 		log.Error("Failed to initialize storage with migration", logger.Err(err))
 		os.Exit(1)
 	}
 
-	//run router
 	router := chi.NewRouter()
 
 	router.Use(middleware.RequestID)
@@ -61,7 +60,6 @@ func main() {
 	//TODO router.Post("/flow-record", )
 	//TODO router.Get("/flow-record", )
 
-	//run server
 	srv := http.Server{
 		Addr:         "localhost:8081",
 		Handler:      router,
@@ -79,6 +77,7 @@ func main() {
 	log.Error("server stopped")
 }
 
+// setupLogger выполняет инициализацию логгера slog и его настройку по данным config файла.
 func setupLogger(env string) *slog.Logger {
 	var log *slog.Logger
 
