@@ -1,3 +1,4 @@
+// Пакет postgreSQL реализует функции для работы с БД PostgreSQL.
 package postgreSQL
 
 import (
@@ -18,14 +19,18 @@ import (
 
 //TODO: create DELETE methods of storage
 
-const (
-	psqlMigrationsPath = "./postgreSQL/migrations/"
-)
+// psqlMigrationsPath содержит локальный путь к папке, содержащей файлы миграции БД.
+const psqlMigrationsPath = "./postgreSQL/migrations/"
 
 type Storage struct {
 	db *sql.DB
 }
 
+// New возвращает соединение с БД PosgreSQL.
+//
+// Инициализация соединения с БД происходит в несколько этапов:
+//  1. Формирование пути подключения к БД и выполнение соединения с БД.
+//  2. Сборка драйвера миграции БД. Выполнение миграций БД.
 func New(AccessInfo *config.DBAccessInfo) (*Storage, error) {
 
 	dataSourceName := fmt.Sprintf("postgres://%s:%s@%s", AccessInfo.DBUser, AccessInfo.DBPassword, AccessInfo.DBAddress)
@@ -54,6 +59,7 @@ func New(AccessInfo *config.DBAccessInfo) (*Storage, error) {
 	return &Storage{db: db}, nil
 }
 
+// AddAccount добавляет новый Account в БД и  возвращает индекс добавленного элемента
 func (storage *Storage) AddAccount(name string) (int, error) {
 
 	query := "INSERT INTO accounts (name) VALUES ($1) RETURNING id"
@@ -67,6 +73,7 @@ func (storage *Storage) AddAccount(name string) (int, error) {
 	return index, nil
 }
 
+// GetAccount получает данные об Account из БД по id и возвращает Account, заполненный по данным БД
 func (storage *Storage) GetAccount(accountId int) (*data.Account, error) {
 
 	result := data.Account{}
@@ -80,6 +87,7 @@ func (storage *Storage) GetAccount(accountId int) (*data.Account, error) {
 	return &result, nil
 }
 
+// AddFlowCategory добавляет новый FlowCategory в БД и  возвращает индекс добавленного элемента
 func (storage *Storage) AddFlowCategory(name string, multiplier, parentId int) (int, error) {
 
 	queryParams := fmt.Sprintf("'%s', %d, parentID", name, multiplier)
@@ -102,6 +110,7 @@ func (storage *Storage) AddFlowCategory(name string, multiplier, parentId int) (
 	return index, nil
 }
 
+// GetFlowCategory получает данные о FlowCategory из БД по id и возвращает FlowCategory, заполненный по данным БД
 func (storage *Storage) GetFlowCategory(categoryId int) (*data.FlowCategory, error) {
 
 	query := queryGetFlowCategoryById()
@@ -116,6 +125,7 @@ func (storage *Storage) GetFlowCategory(categoryId int) (*data.FlowCategory, err
 	return &category, nil
 }
 
+// AddRecordToCashFlow добавляет новый FinanceRecord в БД и  возвращает индекс добавленного элемента
 func (storage *Storage) AddRecordToCashFlow(record *data.FinanceRecord) error {
 
 	query := "INSERT INTO cash_flow(record_date, multiplier, category_id, account_id, amount) VALUES ($1, $2, $3, $4, $5) RETURNING id;"
@@ -130,6 +140,7 @@ func (storage *Storage) AddRecordToCashFlow(record *data.FinanceRecord) error {
 
 }
 
+// GetRecordFromCashFlow получает данные о FinanceRecord из БД по id и возвращает FinanceRecord, заполненный по данным БД
 func (storage *Storage) GetRecordFromCashFlow(recordId int) (*data.FinanceRecord, error) {
 
 	query := "SELECT id, record_date, multiplier, category_id, account_id, amount FROM public.cash_flow WHERE id = $1;"
@@ -144,6 +155,7 @@ func (storage *Storage) GetRecordFromCashFlow(recordId int) (*data.FinanceRecord
 	return &result, nil
 }
 
+// queryGetFlowCategoryById возвращает текст запроса к БД для получения данных FlowCategory по id
 func queryGetFlowCategoryById() string {
 
 	return (`SELECT

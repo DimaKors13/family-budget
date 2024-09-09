@@ -1,3 +1,4 @@
+// Пакет handlers реализует функции-хэндлеры для обработки запросов http-client.
 package handlers
 
 import (
@@ -13,10 +14,13 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+// dataStorage описывает необходимые функции, которые должны быть у переданного storage.
 type dataStorage interface {
 	AddAccount(name string) (int, error)
 }
 
+// PostAccount реализует обертку для хэндлера обработки POST запроса с url "/account"
+// Осуществляет чтение, разбор тела запроса и добавление нового счета в БД.
 func PostAccount(log *slog.Logger, storage dataStorage) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 

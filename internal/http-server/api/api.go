@@ -1,3 +1,4 @@
+// Пакет api содержит структуры и функции, предназначенные для унификации ответов http-сервера, обработки запросов http-client.
 package api
 
 import (
@@ -7,6 +8,7 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+// Передаваемые статусы в ответе
 const (
 	StatusError string = "Error"
 	StatusOK    string = "OK"
@@ -17,6 +19,7 @@ type Response struct {
 	Error  string
 }
 
+// Error формирует Response со статусом StatusError и описанием ошибки.
 func Error(errDescription string) Response {
 	return Response{
 		Status: StatusError,
@@ -24,12 +27,14 @@ func Error(errDescription string) Response {
 	}
 }
 
+// Error формирует Response со статусом StatusOK.
 func OK() Response {
 	return Response{
 		Status: StatusOK,
 	}
 }
 
+// ValidationError обрабатывает ошибки валидации, преобразует описание ошибок в читаемый вид.
 func ValidationError(errs validator.ValidationErrors) Response {
 	var errMsgs []string
 

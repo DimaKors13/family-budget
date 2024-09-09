@@ -1,3 +1,4 @@
+// Пакет config объявляет описание структуры Config`а и реализует функцию заполнения config из .yaml файла.
 package config
 
 import (
@@ -26,6 +27,10 @@ type DBAccessInfo struct {
 	DBPassword string `yaml:"db_password" env-required:"true"`
 }
 
+// MustLoad осуществляет инициализацию Config`a.
+//
+// Из переменной окружения функция получает путь к .yaml файлу, из которого загружает настройки.
+// Для чтение .yaml файла и заполнения структуры Config используется библиотека cleanenv.
 func MustLoad() *Config {
 	configPath := os.Getenv("CONFIG_PATH")
 	if configPath == "" {

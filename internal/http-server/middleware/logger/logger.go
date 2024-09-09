@@ -1,3 +1,4 @@
+// Пакет logger реализует функции для инициализации логгера, который будет использоваться в хэндлерах, обрабатывающих запросы http-client.
 package logger
 
 import (
@@ -8,6 +9,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 )
 
+// New возвращает slog логгер, вывод которого дополнен сведениями запроса http-client и ответа http-server.
 func New(log *slog.Logger) func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		log := log.With(

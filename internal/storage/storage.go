@@ -1,3 +1,4 @@
+// Пакет storage реализует общие функции для работы с любым storage.
 package storage
 
 import (
@@ -5,6 +6,7 @@ import (
 	"runtime"
 )
 
+// CurrentMigrationsPath возвращает полный путь к каталогу migrationsPath
 func CurrentMigrationsPath(migrationsPath string) string {
 
 	_, currenttPath, _, _ := runtime.Caller(0)
