@@ -20,7 +20,7 @@
 - [cleanenv] - config reader
 - [postgreSQL] - database
 - [migrate] - database migrations
-- [log/slog] - looger
+- [log/slog] - loger
 - [net/http]- HTTP-server
 - [chi] - http-service router 
 - [middleware] - middleware handlers
